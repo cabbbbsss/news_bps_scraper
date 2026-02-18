@@ -843,94 +843,94 @@ if not st.session_state.onboarding_completed:
 st.divider()
 
 # Quick Stats Overview with Responsive Cards
-try:
-    db_stats = get_database_stats()
-    if db_stats["date_range"] != "No connection":
-        # Responsive layout - stack on mobile, horizontal on desktop
-        if st.session_state.get('mobile_view', False):
-            # Mobile: 2 columns, stacked rows
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric("📊 Total Articles", f"{db_stats['total_articles']:,}")
-                st.markdown('</div>', unsafe_allow_html=True)
-            with col2:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric("📅 Date Range", db_stats["date_range"])
-                st.markdown('</div>', unsafe_allow_html=True)
+# try:
+#     db_stats = get_database_stats()
+#     if db_stats["date_range"] != "No connection":
+#         # Responsive layout - stack on mobile, horizontal on desktop
+#         if st.session_state.get('mobile_view', False):
+#             # Mobile: 2 columns, stacked rows
+#             col1, col2 = st.columns(2)
+#             with col1:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 st.metric("📊 Total Articles", f"{db_stats['total_articles']:,}")
+#                 st.markdown('</div>', unsafe_allow_html=True)
+#             with col2:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 st.metric("📅 Date Range", db_stats["date_range"])
+#                 st.markdown('</div>', unsafe_allow_html=True)
 
-            col3, col4 = st.columns(2)
-            with col3:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                # Count only non-empty sources
-                unique_sources = [s for s in db_stats["sources"].keys() if s and s.strip()]
-                st.metric("📰 News Sources", len(unique_sources))
-                st.markdown('</div>', unsafe_allow_html=True)
-            with col4:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                # Get latest date
-                try:
-                    conn = get_mysql_conn()
-                    if conn:
-                        cursor = conn.cursor()
-                        cursor.execute("SELECT MAX(date) AS latest_date FROM news_articles")
-                        latest_row = cursor.fetchone() or {}
-                        latest_raw = latest_row.get("latest_date")
-                        if hasattr(latest_raw, "strftime"):
-                            latest_date = latest_raw.strftime("%Y-%m-%d")
-                        else:
-                            latest_date = str(latest_raw) if latest_raw else "N/A"
-                        cursor.close()
-                        conn.close()
-                    else:
-                        latest_date = "N/A"
-                except:
-                    latest_date = "Error"
-                st.metric("🕒 Last Updated", latest_date)
-                st.markdown('</div>', unsafe_allow_html=True)
-        else:
-            # Desktop: 4 columns in a row
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric("📊 Total Articles", f"{db_stats['total_articles']:,}")
-                st.markdown('</div>', unsafe_allow_html=True)
-            with col2:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric("📅 Date Range", db_stats["date_range"])
-                st.markdown('</div>', unsafe_allow_html=True)
-            with col3:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                # Count only non-empty sources
-                unique_sources = [s for s in db_stats["sources"].keys() if s and s.strip()]
-                st.metric("📰 News Sources", len(unique_sources))
-                st.markdown('</div>', unsafe_allow_html=True)
-            with col4:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                # Get latest date
-                try:
-                    conn = get_mysql_conn()
-                    if conn:
-                        cursor = conn.cursor()
-                        cursor.execute("SELECT MAX(date) AS latest_date FROM news_articles")
-                        latest_row = cursor.fetchone() or {}
-                        latest_raw = latest_row.get("latest_date")
-                        if hasattr(latest_raw, "strftime"):
-                            latest_date = latest_raw.strftime("%Y-%m-%d")
-                        else:
-                            latest_date = str(latest_raw) if latest_raw else "N/A"
-                        cursor.close()
-                        conn.close()
-                    else:
-                        latest_date = "N/A"
-                except:
-                    latest_date = "Error"
-                st.metric("🕒 Last Updated", latest_date)
-                st.markdown('</div>', unsafe_allow_html=True)
-except:
-    st.info("📊 Database stats will load shortly...")
+#             col3, col4 = st.columns(2)
+#             with col3:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 # Count only non-empty sources
+#                 unique_sources = [s for s in db_stats["sources"].keys() if s and s.strip()]
+#                 st.metric("📰 News Sources", len(unique_sources))
+#                 st.markdown('</div>', unsafe_allow_html=True)
+#             with col4:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 # Get latest date
+#                 try:
+#                     conn = get_mysql_conn()
+#                     if conn:
+#                         cursor = conn.cursor()
+#                         cursor.execute("SELECT MAX(date) AS latest_date FROM news_articles")
+#                         latest_row = cursor.fetchone() or {}
+#                         latest_raw = latest_row.get("latest_date")
+#                         if hasattr(latest_raw, "strftime"):
+#                             latest_date = latest_raw.strftime("%Y-%m-%d")
+#                         else:
+#                             latest_date = str(latest_raw) if latest_raw else "N/A"
+#                         cursor.close()
+#                         conn.close()
+#                     else:
+#                         latest_date = "N/A"
+#                 except:
+#                     latest_date = "Error"
+#                 st.metric("🕒 Last Updated", latest_date)
+#                 st.markdown('</div>', unsafe_allow_html=True)
+#         else:
+#             # Desktop: 4 columns in a row
+#             col1, col2, col3, col4 = st.columns(4)
+#             with col1:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 st.metric("📊 Total Articles", f"{db_stats['total_articles']:,}")
+#                 st.markdown('</div>', unsafe_allow_html=True)
+#             with col2:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 st.metric("📅 Date Range", db_stats["date_range"])
+#                 st.markdown('</div>', unsafe_allow_html=True)
+#             with col3:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 # Count only non-empty sources
+#                 unique_sources = [s for s in db_stats["sources"].keys() if s and s.strip()]
+#                 st.metric("📰 News Sources", len(unique_sources))
+#                 st.markdown('</div>', unsafe_allow_html=True)
+#             with col4:
+#                 st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+#                 # Get latest date
+#                 try:
+#                     conn = get_mysql_conn()
+#                     if conn:
+#                         cursor = conn.cursor()
+#                         cursor.execute("SELECT MAX(date) AS latest_date FROM news_articles")
+#                         latest_row = cursor.fetchone() or {}
+#                         latest_raw = latest_row.get("latest_date")
+#                         if hasattr(latest_raw, "strftime"):
+#                             latest_date = latest_raw.strftime("%Y-%m-%d")
+#                         else:
+#                             latest_date = str(latest_raw) if latest_raw else "N/A"
+#                         cursor.close()
+#                         conn.close()
+#                     else:
+#                         latest_date = "N/A"
+#                 except:
+#                     latest_date = "Error"
+#                 st.metric("🕒 Last Updated", latest_date)
+#                 st.markdown('</div>', unsafe_allow_html=True)
+# except:
+#     st.info("📊 Database stats will load shortly...")
 
-st.divider()
+# st.divider()
 
 # Initialize session state
 if 'query_results' not in st.session_state:
@@ -1107,15 +1107,50 @@ if st.session_state.scraper_mode == "Web Scraper":
             st.info("Some features may not be available")
     else:
         # Database connection successful
+        def kpi_card(title, value, icon=""):
+            st.markdown(f"""
+            <div style="
+                padding:12px 16px;
+                border-radius:12px;
+                background-color:#f0f2f6;
+                height:100%;
+                display:flex;
+                flex-direction:column;
+                justify-content:center;                
+            ">
+                <div style="font-size:18px; color:#555;">{icon} {title}</div>
+                <div style="font-size:26px; font-weight:600; margin-top:4px;">
+                    {value}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("Total Articles", db_stats["total_articles"])
+            kpi_card("Total Articles", db_stats["total_articles"], "📰")
         with col2:
-            st.metric("Date Range", db_stats["date_range"])
+            st.markdown(f"""
+            <div style="
+                padding:12px 16px;
+                border-radius:10px;
+                background-color:#f0f2f6;
+                height:100px;
+                display:flex;
+                flex-direction:column;
+                justify-content:center;
+            ">
+                <div style="font-size:18px; color:#555;">
+                    📅 Date Range
+                </div>
+                <div style="font-size:22px; font-weight:600; margin-top:6px;">
+                    {db_stats["date_range"]}
+                </div>
+            </div>            
+            """, unsafe_allow_html=True)
         with col3:
             # Count only non-empty sources
             unique_sources = [s for s in db_stats["sources"].keys() if s and s.strip()]
-            st.metric("News Sources", len(unique_sources), help="Total unique news sources in database (excluding empty/NULL)")
+            kpi_card("News Sources", len(unique_sources), "🌍")
         with col4:
             # Try to get the most recent date
             try:
@@ -1126,16 +1161,47 @@ if st.session_state.scraper_mode == "Web Scraper":
                     latest_row = cursor.fetchone() or {}
                     latest_raw = latest_row.get("latest_date")
                     if hasattr(latest_raw, "strftime"):
-                        latest_date = latest_raw.strftime("%Y-%m-%d")
+                        latest_date = latest_raw.strftime("%d %b %Y")
                     else:
-                        latest_date = str(latest_raw) if latest_raw is not None else None
+                        latest_date = str(latest_raw) if latest_raw else "N/A"
                     cursor.close()
                     conn.close()
-                    st.metric("Last Updated", latest_date or "N/A")
                 else:
-                    st.metric("Last Updated", "N/A")
+                    latest_date = "N/A"
             except Exception as e:
-                st.metric("Last Updated", "Error")
+                latest_date = "Error"
+            
+            kpi_card("Last Updated", latest_date, "⏱️")
+
+        # col1, col2, col3, col4 = st.columns(4)
+        # with col1:
+        #     st.metric("Total Articles", db_stats["total_articles"])
+        # with col2:
+        #     st.metric("Date Range", db_stats["date_range"])
+        # with col3:
+        #     # Count only non-empty sources
+        #     unique_sources = [s for s in db_stats["sources"].keys() if s and s.strip()]
+        #     st.metric("News Sources", len(unique_sources), help="Total unique news sources in database (excluding empty/NULL)")
+        # with col4:
+        #     # Try to get the most recent date
+        #     try:
+        #         conn = get_mysql_conn()
+        #         if conn:
+        #             cursor = conn.cursor()
+        #             cursor.execute("SELECT MAX(date) AS latest_date FROM news_articles")
+        #             latest_row = cursor.fetchone() or {}
+        #             latest_raw = latest_row.get("latest_date")
+        #             if hasattr(latest_raw, "strftime"):
+        #                 latest_date = latest_raw.strftime("%Y-%m-%d")
+        #             else:
+        #                 latest_date = str(latest_raw) if latest_raw is not None else None
+        #             cursor.close()
+        #             conn.close()
+        #             st.metric("Last Updated", latest_date or "N/A")
+        #         else:
+        #             st.metric("Last Updated", "N/A")
+        #     except Exception as e:
+        #         st.metric("Last Updated", "Error")
 
 # Enhanced Sidebar Design
 with st.sidebar:
@@ -1368,8 +1434,16 @@ def render_pdf_scraper_sidebar():
 # Tools moved to main content area for better organization
 
 # Version info
-st.caption("📰 News Scraper v2.0")
-st.caption("BPS Provinsi Gorontalo")
+st.markdown("""
+<div style="margin-top:25px; margin-bottom:10px;">
+    <span style="color:gray; font-size:14px;">
+        📰 News Scraper v2.0
+    </span><br>
+    <span style="color:#888; font-size:13px;">
+        BPS Provinsi Gorontalo
+    </span>
+</div>
+""", unsafe_allow_html=True)
 
 # Sidebar content rendering (optimized with functions)
 if st.session_state.scraper_mode == "Web Scraper":
@@ -1714,40 +1788,95 @@ if st.session_state.scraper_mode == "Web Scraper":
         st.subheader("📊 Analysis Results")
 
         # Summary Cards
+        # col1, col2, col3 = st.columns(3)
+
+        # with col1:
+        #     st.metric(
+        #         label="📄 Total Articles",
+        #         value=f"{len(df):,}",
+        #         help="Number of articles found matching your search criteria"
+        #     )
+
+        # with col2:
+        #     # Calculate date range properly
+        #     if len(df) > 0 and 'date' in df.columns:
+        #         min_date = pd.to_datetime(df['date']).min().strftime('%Y-%m-%d')
+        #         max_date = pd.to_datetime(df['date']).max().strftime('%Y-%m-%d')
+        #         date_range = f"{min_date} to {max_date}"
+        #     else:
+        #         date_range = "No data"
+        #     st.metric(
+        #         label="📅 Date Range",
+        #         value=date_range,
+        #         help="Date range of articles in results"
+        #     )
+
+        # with col3:
+        #     # Count unique sources
+        #     if 'sources' in df.columns:
+        #         unique_sources = df['sources'].dropna().replace('', pd.NA).dropna().nunique()
+        #     else:
+        #         unique_sources = 0
+        #     st.metric(
+        #         label="📰 News Sources",
+        #         value=unique_sources,
+        #         help="Number of unique news sources in results"
+        #     )
+
         col1, col2, col3 = st.columns(3)
 
-        with col1:
-            st.metric(
-                label="📄 Total Articles",
-                value=f"{len(df):,}",
-                help="Number of articles found matching your search criteria"
-            )
+        card_style = """
+        padding:14px 18px;
+        border-radius:12px;
+        background:#f0f2f6;
+        box-shadow:0 1px 2px rgba(0,0,0,0.04);
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;         
+        """
 
+        label_style = "font-size:18px; color:#6c757d; margin-bottom:6px;"
+        value_style = """font-size:26px; font-weight:600; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"""
+
+        # --- COL 1 ---
+        with col1:
+            st.markdown(f"""
+            <div style="{card_style}">
+                <div style="{label_style}">📄 Total Articles</div>
+                <div style="{value_style}">{len(df):,}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        # --- COL 2 ---
         with col2:
-            # Calculate date range properly
             if len(df) > 0 and 'date' in df.columns:
                 min_date = pd.to_datetime(df['date']).min().strftime('%Y-%m-%d')
                 max_date = pd.to_datetime(df['date']).max().strftime('%Y-%m-%d')
-                date_range = f"{min_date} to {max_date}"
+                date_range = f"{min_date} → {max_date}"
             else:
                 date_range = "No data"
-            st.metric(
-                label="📅 Date Range",
-                value=date_range,
-                help="Date range of articles in results"
-            )
 
+            st.markdown(f"""
+            <div style="{card_style}">
+                <div style="{label_style}">📅 Date Range</div>
+                <div style="{value_style}">{date_range}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        # --- COL 3 ---
         with col3:
-            # Count unique sources
             if 'sources' in df.columns:
                 unique_sources = df['sources'].dropna().replace('', pd.NA).dropna().nunique()
             else:
                 unique_sources = 0
-            st.metric(
-                label="📰 News Sources",
-                value=unique_sources,
-                help="Number of unique news sources in results"
-            )
+
+            st.markdown(f"""
+            <div style="{card_style}">
+                <div style="{label_style}">📰 News Sources</div>
+                <div style="{value_style}">{unique_sources}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
         # Additional insights
         if len(df) > 0:
@@ -1763,7 +1892,7 @@ if st.session_state.scraper_mode == "Web Scraper":
                     if not bps_counts.empty:
                         dominant_bps = bps_counts.index[0]
                         dominant_name = BPS_CATEGORIES.get(dominant_bps, dominant_bps)
-                        st.info(f"🏷️ **Top BPS:** {dominant_bps} ({dominant_name})")
+                        st.info(f"🏷️ **Top Category:** {dominant_bps} ({dominant_name})")
 
         # Data preview
         st.subheader("👀 Article Results")
